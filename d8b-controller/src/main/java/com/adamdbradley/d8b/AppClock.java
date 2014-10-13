@@ -3,7 +3,10 @@ package com.adamdbradley.d8b;
 import java.time.Clock;
 import java.time.Instant;
 
-public class AppClock {
+/**
+ * Convenience methods for interacting with the clock.
+ */
+public abstract class AppClock {
 
     public static final Clock CLOCK = Clock.systemUTC();
 
