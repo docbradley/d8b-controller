@@ -1,7 +1,7 @@
 /**
  * An "Actor" is a {@link java.util.concurrent.Callable} that can be
  * used to perform some defined task or operation.  An actor may be
- * short-lived (e.g., {@link com.adamdbradley.d8b.actor.ConsoleBooter})
+ * short-lived (e.g., {@link com.adamdbradley.d8b.actor.FullBoot})
  * or may persist once started (e.g., an HUI application).  Actors that
  * need to listen for events from the console can use
  * {@link com.adamdbradley.d8b.console.ConsoleControlConnection#subscribe(java.util.Queue)}

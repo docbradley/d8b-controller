@@ -21,7 +21,7 @@ import com.adamdbradley.d8b.console.signal.Signal;
 import com.adamdbradley.d8b.console.signal.SignalType;
 import com.google.common.base.Strings;
 
-public class ConsoleBooter
+public class FullBoot
 extends ConsoleActor
 implements Callable<Void> {
 
@@ -32,7 +32,7 @@ implements Callable<Void> {
 
     private volatile boolean screenReady = false;
 
-    public ConsoleBooter(final ConsoleControlConnection console,
+    public FullBoot(final ConsoleControlConnection console,
             final AudioControlConnection audio) {
         super(console, audio);
 
