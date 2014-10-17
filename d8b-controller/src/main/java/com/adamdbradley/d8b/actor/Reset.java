@@ -12,7 +12,7 @@ import com.adamdbradley.d8b.console.command.ShutAllLEDs;
 import com.adamdbradley.d8b.console.command.TimecodeHelper;
 
 public class Reset
-extends ConsoleActor
+extends Actor
 implements Callable<Void> {
 
     public Reset(final ConsoleControlConnection console) {
