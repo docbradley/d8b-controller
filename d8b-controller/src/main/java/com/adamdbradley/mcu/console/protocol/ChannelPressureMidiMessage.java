@@ -1,4 +1,4 @@
-package com.adamdbradley.mcu.protocol;
+package com.adamdbradley.mcu.console.protocol;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.ShortMessage;

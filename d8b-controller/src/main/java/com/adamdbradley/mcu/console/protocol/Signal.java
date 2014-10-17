@@ -1,4 +1,4 @@
-package com.adamdbradley.mcu.protocol;
+package com.adamdbradley.mcu.console.protocol;
 
 /**
  * Immutable message object meant to indicate something has
