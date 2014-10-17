@@ -22,7 +22,7 @@ import com.adamdbradley.d8b.console.signal.SignalType;
 import com.google.common.base.Strings;
 
 public class FullBoot
-extends ConsoleActor
+extends Actor
 implements Callable<Void> {
 
     private final byte[] surfaceFirmwareImage;

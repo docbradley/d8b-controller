@@ -28,7 +28,7 @@ import com.adamdbradley.d8b.console.command.TimecodeHelper;
 import com.adamdbradley.d8b.console.command.UpdateTimecode;
 
 public class TryAllCommands
-extends ConsoleActor
+extends Actor
 implements Callable<Void> {
 
     public TryAllCommands(final ConsoleControlConnection console) {

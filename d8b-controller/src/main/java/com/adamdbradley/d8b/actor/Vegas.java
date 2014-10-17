@@ -32,7 +32,7 @@ import com.adamdbradley.d8b.console.command.ShutVPotLED;
 import com.adamdbradley.d8b.console.command.TimecodeHelper;
 
 public class Vegas
-extends ConsoleActor
+extends Actor
 implements Callable<Void> {
 
     private static final Random rng = new Random();

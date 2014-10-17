@@ -11,7 +11,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import com.adamdbradley.d8b.actor.ConsoleActor;
+import com.adamdbradley.d8b.actor.Actor;
 import com.adamdbradley.d8b.actor.FullBoot;
 import com.adamdbradley.d8b.actor.Reset;
 import com.adamdbradley.d8b.actor.TryAllCommands;
@@ -40,7 +40,7 @@ public class InteractiveClient implements Runnable, AutoCloseable {
     private final AudioControlConnection console2;
     private final Queue<Signal> signalPrinterQueue = new ConcurrentLinkedQueue<>();
 
-    private final Map<String, ConsoleActor> namedActors = new ConcurrentHashMap<>();
+    private final Map<String, Actor> namedActors = new ConcurrentHashMap<>();
 
 
     private final Thread signalPrinter = new Thread() {
