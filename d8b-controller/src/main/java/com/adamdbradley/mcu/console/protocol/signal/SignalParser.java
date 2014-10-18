@@ -156,9 +156,9 @@ public class SignalParser {
                     case 0x12:
                         // Screen write -- Command, not signal
                     case 0x13:
-                        // Request SOMETHING -- Command, not signal
+                        // Request version number -- Command, not signal
                     case 0x14:
-                        // Reply to 0x13 --- ???
+                        // Version number report -- TODO
                     case 0x1A:
                         // Serial number request -- Command, not signal
                         return null;

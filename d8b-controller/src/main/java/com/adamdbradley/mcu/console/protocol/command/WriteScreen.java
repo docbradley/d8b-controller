@@ -1,19 +1,19 @@
 package com.adamdbradley.mcu.console.protocol.command;
 
-import java.util.Map;
-
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiMessage;
 
 import com.adamdbradley.mcu.console.DeviceType;
 import com.adamdbradley.mcu.console.protocol.Command;
 import com.adamdbradley.mcu.console.protocol.MCUSysexMessage;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.ImmutableBiMap;
 
 public class WriteScreen
 implements Command {
 
     public final DeviceType deviceType;
+    public final String string;
 
     private final MCUSysexMessage message;
 
@@ -27,37 +27,114 @@ implements Command {
             throw new IllegalStateException(e);
         }
         this.deviceType = deviceType;
+        this.string = string;
     }
+
+    public WriteScreen(final DeviceType deviceType,
+            final int row, final int column,
+            final byte[] encodedString) {
+        try {
+            message = new MCUSysexMessage(deviceType,
+                    build(row, column, encodedString));
+        } catch (InvalidMidiDataException e) {
+            throw new IllegalStateException(e);
+        }
+        this.deviceType = deviceType;
+        this.string = decode(encodedString);
+    }
+
 
     @Override
     public MidiMessage getMessage() {
         return message;
     }
 
-    private static byte[] build(int row, int column, String string) {
+    private static byte[] build(final int row, final int column, final String string) {
+        return build(row, column, encode(string));
+    }
+
+    private static byte[] build(final int row, final int column, final byte[] encodedString) {
         final int startPosition = (row * 0x38) + column;
-        
-        final byte[] payload = new byte[string.length() + 2];
+
+        final byte[] payload = new byte[encodedString.length + 2];
         payload[0] = 0x12;
         payload[1] = (byte) startPosition;
-        for (int i=0; i<string.length(); i++) {
-            final char character = string.charAt(i);
-            payload[2 + i] = map(character);
-        }
+        System.arraycopy(encodedString, 0, payload, 2, encodedString.length);
+
         return payload;
     }
 
-    private static byte map(final char character) {
+
+    public static byte[] encode(final String string) {
+        final byte[] encodedString = new byte[string.length()];
+        for (int i=0; i<string.length(); i++) {
+            final char character = string.charAt(i);
+            encodedString[i] = encode(character);
+        }
+        return encodedString;
+    }
+
+    public static byte encode(final char character) {
         if (charEncoding.containsKey(character)) {
             return charEncoding.get(character);
+        } else {
+            throw new IllegalArgumentException("Can't encode character [" + character + "]");
+        }
+    }
+
+
+    public static String decode(final byte[] encodedString) {
+        final StringBuilder sb = new StringBuilder();
+        for (int i=0; i<encodedString.length; i++) {
+            sb.append(decode(encodedString[i]));
+        }
+        return sb.toString();
+    }
+
+    public static char decode(final byte encodedByte) {
+        if (charEncoding.inverse().containsKey(encodedByte)) {
+            return charEncoding.inverse().get(encodedByte);
         } else {
             return (byte) 0x3f;
         }
     }
 
+
     // See http://stash.reaper.fm/12333/HUI_CSET.txt
-    private static final Map<Character, Byte> charEncoding = ImmutableMap.<Character, Byte>builder()
+    private static final BiMap<Character, Byte> charEncoding = ImmutableBiMap.<Character, Byte>builder()
             // 00 through 1F are extended (Latin-1-ish?) characters
+            .put('\u00EC', (byte) 0x00) // i grave
+            .put('\u2191', (byte) 0x01) // up arrow
+            .put('\u2192', (byte) 0x02) // right arrow
+            .put('\u2193', (byte) 0x03) // down arrow
+            .put('\u2190', (byte) 0x04) // left arrow
+            .put('\u00BF', (byte) 0x05) // inverted question mark
+            .put('\u00E0', (byte) 0x06) // a grave
+            .put('\u00D8', (byte) 0x07) // capital o with stroke
+            .put('\u00F8', (byte) 0x08) // small o with stroke
+            .put('\u00F2', (byte) 0x09) // o grave
+            .put('\u00F9', (byte) 0x0A) // u grave
+            .put('\u00F1', (byte) 0x0B) // n~
+            .put('\u00E7', (byte) 0x0C) // c_
+            .put('\u00EA', (byte) 0x0E) // e circumflex
+            .put('\u00C9', (byte) 0x0D) // E acute
+            .put('\u00E9', (byte) 0x0F) // e actute
+            .put('\u00E8', (byte) 0x10) // e grave
+            .put('\u00C6', (byte) 0x11) // AE
+            .put('\u00E6', (byte) 0x12) // ae
+            .put('\u00C5', (byte) 0x13) // A ring
+            .put('\u00E5', (byte) 0x14) // a ring
+            .put('\u00C4', (byte) 0x15) // A diaeresis
+            .put('\u00E4', (byte) 0x16) // a diaeresis
+            .put('\u00D6', (byte) 0x17) // O diaeresis
+            .put('\u00F6', (byte) 0x18) // o diaeresis
+            .put('\u00DC', (byte) 0x19) // U diaeresis
+            .put('\u00FC', (byte) 0x1A) // u diaeresis
+            .put('\u2109', (byte) 0x1B) // deg C
+            .put('\u2103', (byte) 0x1C) // deg F 
+            .put('\u00DF', (byte) 0x1D) // sharp S
+            .put('\u00A3', (byte) 0x1E) // pound
+            .put('\u00A5', (byte) 0x1F) // yen
             .put(' ', (byte) 0x20)
             .put('!', (byte) 0x21)
             .put('"', (byte) 0x22)
@@ -153,7 +230,7 @@ implements Command {
             .put('|', (byte) 0x7C)
             .put('}', (byte) 0x7D)
             .put('~', (byte) 0x7E)
-            // .put(' ', (byte) 0x7F) // fuzzy block
+            .put('\u2591', (byte) 0x7F) // light block
             .build();
 
 }
