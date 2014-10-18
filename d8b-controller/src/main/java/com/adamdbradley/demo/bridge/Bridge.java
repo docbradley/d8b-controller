@@ -29,6 +29,14 @@ import com.adamdbradley.mcu.console.protocol.signal.ChannelVPotMoved;
 import com.adamdbradley.mcu.console.protocol.signal.FaderMoved;
 import com.adamdbradley.mcu.console.protocol.signal.FaderReleased;
 
+/**
+ * {@link Bridge} implements a pidgin connection between a running MCU
+ * and a running d8b, allowing them to manipulate each other's faders,
+ * a few LEDs, and a few transport buttons.
+ * <p>
+ * Mainly to prove to myself that parsing and message transmission works
+ * and that the subscription architecture is workable.
+ */
 public class Bridge
 implements Runnable, AutoCloseable {
 
