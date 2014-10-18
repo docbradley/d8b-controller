@@ -157,13 +157,15 @@ public class SignalParser {
                         // Screen write -- Command, not signal
                     case 0x13:
                         // Request version number -- Command, not signal
+                        return null;
                     case 0x14:
-                        // Version number report -- TODO
+                        // Version number report: 5 bytes
+                        return new ReportVersion(device, Arrays.copyOfRange(payload, 6, 11));
                     case 0x1A:
                         // Serial number request -- Command, not signal
                         return null;
                     case 0x1B:
-                        // Serial number report
+                        // Serial number report: 6 bytes
                         return new ReportSerialNumber(device, Arrays.copyOfRange(payload, 6, 12));
                     default:
                         // Unknown message type

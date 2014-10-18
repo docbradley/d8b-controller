@@ -6,7 +6,11 @@ import javax.sound.midi.MidiMessage;
 import com.adamdbradley.mcu.console.DeviceType;
 import com.adamdbradley.mcu.console.protocol.Command;
 import com.adamdbradley.mcu.console.protocol.MCUSysexMessage;
+import com.adamdbradley.mcu.console.protocol.signal.ReportVersion;
 
+/**
+ * Reply is {@link ReportVersion}
+ */
 public class RequestVersion
 implements Command {
 

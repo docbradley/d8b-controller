@@ -9,26 +9,31 @@ import javax.sound.midi.SysexMessage;
 import com.adamdbradley.mcu.console.DeviceType;
 import com.adamdbradley.mcu.console.protocol.MCUSysexMessage;
 import com.adamdbradley.mcu.console.protocol.Signal;
+import com.adamdbradley.mcu.console.protocol.command.RequestVersion;
 
-public class ReportSerialNumber
+/**
+ * Reply to {@link RequestVersion}
+ */
+public class ReportVersion
 implements Signal {
 
-    private final BigInteger serialNumber;
+    private final BigInteger version;
     private final SysexMessage message;
 
-    public ReportSerialNumber(final DeviceType deviceType,
-            final byte[] serialNumber) {
-        final byte[] payload = new byte[7];
-        payload[0] = 0x1B;
-        System.arraycopy(serialNumber, 0, payload, 1, 6);
-
+    public ReportVersion(final DeviceType deviceType,
+            final byte[] versionNumber) {
         try {
-            this.message = new MCUSysexMessage(deviceType, payload);
+            this.message = new MCUSysexMessage(deviceType,
+                    (byte) 0x14,
+                    versionNumber[0],
+                    versionNumber[1],
+                    versionNumber[2],
+                    versionNumber[3],
+                    versionNumber[4]);
         } catch (InvalidMidiDataException e) {
             throw new IllegalStateException(e);
         }
-
-        this.serialNumber = new BigInteger(serialNumber);
+        this.version = new BigInteger(versionNumber);
     }
 
     @Override
@@ -40,7 +45,7 @@ implements Signal {
     public String toString() {
         return this.getClass().getSimpleName() + ":"
                 + MCUSysexMessage.toString(message)
-                + " -- " + serialNumber.toString(16);
+                + " -- " + version.toString(16);
     }
 
 }
