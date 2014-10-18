@@ -38,9 +38,9 @@ public enum PanelLED {
 
     Zoom,
 
-    Scrub
+    Scrub,
 
-
-    // XXX TODO: SMPTE/BEATS LEDs next time time display?
+    Timecode_SMPTE,
+    Timecode_BEATS
 
 }

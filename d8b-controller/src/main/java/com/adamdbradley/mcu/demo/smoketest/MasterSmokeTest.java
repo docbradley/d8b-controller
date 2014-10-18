@@ -22,7 +22,6 @@ import com.adamdbradley.mcu.console.Fader;
 import com.adamdbradley.mcu.console.PanelLED;
 import com.adamdbradley.mcu.console.SignalLevelDisplayMode;
 import com.adamdbradley.mcu.console.protocol.Signal;
-import com.adamdbradley.mcu.console.protocol.UniversalDeviceQuery;
 import com.adamdbradley.mcu.console.protocol.command.LightChannelLED;
 import com.adamdbradley.mcu.console.protocol.command.LightPanelLED;
 import com.adamdbradley.mcu.console.protocol.command.MoveFader;
@@ -33,6 +32,7 @@ import com.adamdbradley.mcu.console.protocol.command.SetSignalLevel;
 import com.adamdbradley.mcu.console.protocol.command.SetSignalLevelDisplayMode;
 import com.adamdbradley.mcu.console.protocol.command.ShutChannelLED;
 import com.adamdbradley.mcu.console.protocol.command.ShutPanelLED;
+import com.adamdbradley.mcu.console.protocol.command.WakeUp;
 import com.adamdbradley.mcu.console.protocol.command.WriteScreen;
 import com.adamdbradley.mcu.console.protocol.command.WriteTimecode;
 import com.adamdbradley.mcu.console.protocol.command.WriteVPot;
@@ -68,11 +68,11 @@ implements Runnable, AutoCloseable {
         port.subscribe(queue);
 
         try {
-            port.send(new UniversalDeviceQuery());
+            port.send(new WakeUp(DeviceType.Master));
 
             Thread.sleep(1000);
             while (!queue.isEmpty()) {
-                System.err.println("UDQ: " + queue.poll());
+                System.err.println("WAKEUP Master: " + queue.poll());
             }
 
             port.send(new RequestSerialNumber(DeviceType.Master));
@@ -82,26 +82,13 @@ implements Runnable, AutoCloseable {
                 System.err.println("RSN Master: " + queue.poll());
             }
 
-            port.send(new RequestSerialNumber(DeviceType.Extender));
-
-            Thread.sleep(1000);
-            while (!queue.isEmpty()) {
-                System.err.println("RSN XT: " + queue.poll());
-            }
-
-            port.send(new RequestSerialNumber(DeviceType.C4));
-
-            Thread.sleep(1000);
-            while (!queue.isEmpty()) {
-                System.err.println("RSN C4: " + queue.poll());
-            }
-
             port.send(new RequestVersion(DeviceType.Master));
 
             Thread.sleep(1000);
             while (!queue.isEmpty()) {
                 System.err.println("RV Master: " + queue.poll());
             }
+
 
             port.send(new SetGlobalSignalLevelDisplayMode(DeviceType.Master,
                     SignalLevelDisplayMode.OFF));
@@ -124,12 +111,16 @@ implements Runnable, AutoCloseable {
             }
 
             for (PanelLED led: PanelLED.values()) {
-                port.send(new LightPanelLED(led));
-                Thread.sleep(100);
+                if (led != PanelLED.Timecode_SMPTE && led != PanelLED.Timecode_BEATS) {
+                    port.send(new LightPanelLED(led));
+                    Thread.sleep(100);
+                }
             }
             for (PanelLED led: PanelLED.values()) {
-                port.send(new ShutPanelLED(led));
-                Thread.sleep(100);
+                if (led != PanelLED.Timecode_SMPTE && led != PanelLED.Timecode_BEATS) {
+                    port.send(new ShutPanelLED(led));
+                    Thread.sleep(100);
+                }
             }
 
             for (SignalLevelDisplayMode mode: SignalLevelDisplayMode.values()) {

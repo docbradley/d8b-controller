@@ -10,6 +10,13 @@ public enum Fader {
     Ch6,
     Ch7,
     Ch8,
-    Master
+    Master;
 
+    public Channel channel() {
+        if (this == Master) {
+            throw new IllegalStateException("Master fader doesn't have a Channel");
+        } else {
+            return Channel.values()[ordinal()];
+        }
+    }
 }
