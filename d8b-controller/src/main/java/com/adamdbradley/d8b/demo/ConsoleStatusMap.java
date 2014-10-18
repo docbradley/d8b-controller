@@ -1,4 +1,4 @@
-package com.adamdbradley.d8b;
+package com.adamdbradley.d8b.demo;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
