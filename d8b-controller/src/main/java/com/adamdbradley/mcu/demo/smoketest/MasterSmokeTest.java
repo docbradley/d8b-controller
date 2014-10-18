@@ -1,8 +1,11 @@
 package com.adamdbradley.mcu.demo.smoketest;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiDevice.Info;
@@ -10,6 +13,7 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 
+import com.adamdbradley.d8b.AppClock;
 import com.adamdbradley.mcu.MCUMidiPort;
 import com.adamdbradley.mcu.console.Channel;
 import com.adamdbradley.mcu.console.ChannelLED;
@@ -17,11 +21,13 @@ import com.adamdbradley.mcu.console.DeviceType;
 import com.adamdbradley.mcu.console.Fader;
 import com.adamdbradley.mcu.console.PanelLED;
 import com.adamdbradley.mcu.console.SignalLevelDisplayMode;
+import com.adamdbradley.mcu.console.protocol.Signal;
 import com.adamdbradley.mcu.console.protocol.UniversalDeviceQuery;
 import com.adamdbradley.mcu.console.protocol.command.LightChannelLED;
 import com.adamdbradley.mcu.console.protocol.command.LightPanelLED;
 import com.adamdbradley.mcu.console.protocol.command.MoveFader;
 import com.adamdbradley.mcu.console.protocol.command.RequestSerialNumber;
+import com.adamdbradley.mcu.console.protocol.command.RequestVersion;
 import com.adamdbradley.mcu.console.protocol.command.SetGlobalSignalLevelDisplayMode;
 import com.adamdbradley.mcu.console.protocol.command.SetSignalLevel;
 import com.adamdbradley.mcu.console.protocol.command.SetSignalLevelDisplayMode;
@@ -36,6 +42,7 @@ public class MasterSmokeTest
 implements Runnable, AutoCloseable {
 
     private final MCUMidiPort port;
+    private final Queue<Signal> queue = new ConcurrentLinkedQueue<>();
 
     public MasterSmokeTest(List<Info> candidates) throws MidiUnavailableException {
         port = openPort(candidates);
@@ -58,14 +65,47 @@ implements Runnable, AutoCloseable {
 
     @Override
     public void run() {
+        port.subscribe(queue);
+
         try {
             port.send(new UniversalDeviceQuery());
+
+            Thread.sleep(1000);
+            while (!queue.isEmpty()) {
+                System.err.println("UDQ: " + queue.poll());
+            }
+
             port.send(new RequestSerialNumber(DeviceType.Master));
 
             Thread.sleep(1000);
+            while (!queue.isEmpty()) {
+                System.err.println("RSN Master: " + queue.poll());
+            }
+
+            port.send(new RequestSerialNumber(DeviceType.Extender));
+
+            Thread.sleep(1000);
+            while (!queue.isEmpty()) {
+                System.err.println("RSN XT: " + queue.poll());
+            }
+
+            port.send(new RequestSerialNumber(DeviceType.C4));
+
+            Thread.sleep(1000);
+            while (!queue.isEmpty()) {
+                System.err.println("RSN C4: " + queue.poll());
+            }
+
+            port.send(new RequestVersion(DeviceType.Master));
+
+            Thread.sleep(1000);
+            while (!queue.isEmpty()) {
+                System.err.println("RV Master: " + queue.poll());
+            }
 
             port.send(new SetGlobalSignalLevelDisplayMode(DeviceType.Master,
                     SignalLevelDisplayMode.OFF));
+
             port.send(new WriteScreen(DeviceType.Master,
                     0, 0, 
                     Strings.repeat("        ", 14)
@@ -181,7 +221,15 @@ implements Runnable, AutoCloseable {
                         0, 0, "                    "));
             }
 
-            Thread.sleep(1800000);
+            final Instant die = AppClock.now().plusSeconds(60);
+            while (die.isAfter(AppClock.now())) {
+                if (!queue.isEmpty()) {
+                    System.err.println("Startup: " + queue.poll());
+                } else {
+                    Thread.yield();
+                }
+            }
+
         } catch (InvalidMidiDataException | InterruptedException e) {
             throw new RuntimeException(e);
         }
