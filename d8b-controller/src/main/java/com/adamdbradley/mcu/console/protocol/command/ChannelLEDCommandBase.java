@@ -9,10 +9,15 @@ abstract class ChannelLEDCommandBase
 extends NoteOnMessageBase
 implements Command {
 
+    public final Channel channel;
+    public final ChannelLED led;
+
     public ChannelLEDCommandBase(final Channel channel, final ChannelLED led, final boolean light) {
         super((byte) 0,
                 encode(led, channel),
                 (byte) (light ? 0x7F : 0x00));
+        this.channel = channel;
+        this.led = led;
     }
 
     protected static byte encode(final ChannelLED led, final Channel channel) {

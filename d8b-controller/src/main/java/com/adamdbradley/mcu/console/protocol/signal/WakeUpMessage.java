@@ -40,4 +40,9 @@ implements Signal {
         return message;
     }
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName()
+                + ":" + MCUSysexMessage.toString(message);
+    }
 }
