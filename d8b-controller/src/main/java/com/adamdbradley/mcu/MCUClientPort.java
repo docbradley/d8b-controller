@@ -24,7 +24,7 @@ import com.adamdbradley.mcu.console.protocol.signal.SignalParser;
  * {@link #subscribe(Queue)}.  To send {@link Command}s to the MCU surface,
  * call {@link #send(Command)}.
  */
-public class MCUMidiPort
+public class MCUClientPort
 implements AutoCloseable {
 
     // Communications
@@ -38,12 +38,12 @@ implements AutoCloseable {
     private final List<Queue<Signal>> subscribers = Collections
             .synchronizedList(new ArrayList<>(16));
 
-    public MCUMidiPort(final MidiDevice.Info inDeviceInfo, final MidiDevice.Info outDeviceInfo)
+    public MCUClientPort(final MidiDevice.Info inDeviceInfo, final MidiDevice.Info outDeviceInfo)
             throws MidiUnavailableException {
         this(MidiSystem.getMidiDevice(inDeviceInfo), MidiSystem.getMidiDevice(outDeviceInfo));
     }
 
-    public MCUMidiPort(final MidiDevice inDevice, final MidiDevice outDevice)
+    public MCUClientPort(final MidiDevice inDevice, final MidiDevice outDevice)
             throws MidiUnavailableException {
         if (inDevice.isOpen()) {
             throw new IllegalStateException("inDevice already open");

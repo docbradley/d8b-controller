@@ -16,7 +16,7 @@ import com.adamdbradley.d8b.actor.Reset;
 import com.adamdbradley.d8b.audio.AudioControlConnection;
 import com.adamdbradley.d8b.console.ConsoleControlConnection;
 import com.adamdbradley.d8b.console.signal.Signal;
-import com.adamdbradley.mcu.MCUMidiPort;
+import com.adamdbradley.mcu.MCUClientPort;
 import com.adamdbradley.mcu.MidiPortHelper;
 import com.adamdbradley.mcu.actor.MCUReset;
 import com.adamdbradley.mcu.actor.MasterStartup;
@@ -34,7 +34,7 @@ implements Runnable, AutoCloseable {
 
     private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(8);
 
-    private final MCUMidiPort mcuPort;
+    private final MCUClientPort mcuPort;
     private final ConsoleControlConnection console;
     private final AudioControlConnection audio;
 

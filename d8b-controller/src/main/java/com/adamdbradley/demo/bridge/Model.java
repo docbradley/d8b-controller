@@ -4,7 +4,7 @@ import com.adamdbradley.d8b.console.ConsoleControlConnection;
 import com.adamdbradley.d8b.console.PanelLED;
 import com.adamdbradley.d8b.console.command.LightPanelLED;
 import com.adamdbradley.d8b.console.command.ShutPanelLED;
-import com.adamdbradley.mcu.MCUMidiPort;
+import com.adamdbradley.mcu.MCUClientPort;
 import com.adamdbradley.mcu.console.ChannelLED;
 import com.adamdbradley.mcu.console.DeviceType;
 import com.adamdbradley.mcu.console.Fader;
@@ -23,9 +23,9 @@ public class Model {
 
 
     private ConsoleControlConnection console;
-    private MCUMidiPort mcuPort;
+    private MCUClientPort mcuPort;
 
-    public void connect(ConsoleControlConnection console, MCUMidiPort mcuPort) {
+    public void connect(ConsoleControlConnection console, MCUClientPort mcuPort) {
         this.console = console;
         this.mcuPort = mcuPort;
     }

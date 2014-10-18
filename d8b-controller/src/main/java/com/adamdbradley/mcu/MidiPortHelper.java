@@ -11,7 +11,7 @@ import javax.sound.midi.MidiUnavailableException;
 
 public class MidiPortHelper {
 
-    public static MCUMidiPort findAndOpenPort() throws MidiUnavailableException {
+    public static MCUClientPort findAndOpenPort() throws MidiUnavailableException {
         final List<MidiDevice.Info> infos = Arrays.asList(MidiSystem.getMidiDeviceInfo());
         final List<MidiDevice.Info> candidates = new ArrayList<>(2);
         for (final MidiDevice.Info info: infos) {
@@ -27,11 +27,11 @@ public class MidiPortHelper {
         return openPort(candidates);
     }
 
-    private static MCUMidiPort openPort(final List<Info> candidates) throws MidiUnavailableException {
+    private static MCUClientPort openPort(final List<Info> candidates) throws MidiUnavailableException {
         if (MidiSystem.getMidiDevice(candidates.get(0)).getMaxReceivers() != 0) {
-            return new MCUMidiPort(candidates.get(1), candidates.get(0));
+            return new MCUClientPort(candidates.get(1), candidates.get(0));
         } else {
-            return new MCUMidiPort(candidates.get(0), candidates.get(1));
+            return new MCUClientPort(candidates.get(0), candidates.get(1));
         }
     }
 

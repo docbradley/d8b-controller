@@ -14,7 +14,7 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 
 import com.adamdbradley.d8b.AppClock;
-import com.adamdbradley.mcu.MCUMidiPort;
+import com.adamdbradley.mcu.MCUClientPort;
 import com.adamdbradley.mcu.console.Channel;
 import com.adamdbradley.mcu.console.ChannelLED;
 import com.adamdbradley.mcu.console.DeviceType;
@@ -41,18 +41,18 @@ import com.google.common.base.Strings;
 public class MasterSmokeTest
 implements Runnable, AutoCloseable {
 
-    private final MCUMidiPort port;
+    private final MCUClientPort port;
     private final Queue<Signal> queue = new ConcurrentLinkedQueue<>();
 
     public MasterSmokeTest(List<Info> candidates) throws MidiUnavailableException {
         port = openPort(candidates);
     }
 
-    private MCUMidiPort openPort(List<Info> candidates) throws MidiUnavailableException {
+    private MCUClientPort openPort(List<Info> candidates) throws MidiUnavailableException {
         if (MidiSystem.getMidiDevice(candidates.get(0)).getMaxReceivers() != 0) {
-            return new MCUMidiPort(candidates.get(1), candidates.get(0));
+            return new MCUClientPort(candidates.get(1), candidates.get(0));
         } else {
-            return new MCUMidiPort(candidates.get(0), candidates.get(1));
+            return new MCUClientPort(candidates.get(0), candidates.get(1));
         }
     }
 

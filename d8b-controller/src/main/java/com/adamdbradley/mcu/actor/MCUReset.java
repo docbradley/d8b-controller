@@ -1,6 +1,6 @@
 package com.adamdbradley.mcu.actor;
 
-import com.adamdbradley.mcu.MCUMidiPort;
+import com.adamdbradley.mcu.MCUClientPort;
 import com.adamdbradley.mcu.console.Channel;
 import com.adamdbradley.mcu.console.ChannelLED;
 import com.adamdbradley.mcu.console.Fader;
@@ -18,7 +18,7 @@ import com.adamdbradley.mcu.console.protocol.command.WriteVPot;
  */
 public class MCUReset extends MCUActor {
 
-    public MCUReset(final MCUMidiPort port) {
+    public MCUReset(final MCUClientPort port) {
         super(port);
     }
 

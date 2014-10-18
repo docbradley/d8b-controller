@@ -3,7 +3,7 @@ package com.adamdbradley.mcu.actor;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import com.adamdbradley.mcu.MCUMidiPort;
+import com.adamdbradley.mcu.MCUClientPort;
 import com.adamdbradley.mcu.console.DeviceType;
 import com.adamdbradley.mcu.console.SignalLevelDisplayMode;
 import com.adamdbradley.mcu.console.protocol.Signal;
@@ -21,7 +21,7 @@ public class MasterStartup extends MCUActor {
 
     private final Queue<Signal> queue = new ConcurrentLinkedQueue<>();
 
-    public MasterStartup(final MCUMidiPort port) {
+    public MasterStartup(final MCUClientPort port) {
         super(port);
     }
 
