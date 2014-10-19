@@ -101,13 +101,13 @@ implements Runnable, AutoCloseable {
                     0, 0x38 - 1 - MESSAGE.length(), MESSAGE));
 
             for (byte pos=0; pos<=0x0B; pos++) {
-                for (byte ch=0; ch<0x40; ch++) {
-                    for (boolean dot: new boolean[] { false, true }) {
+                for (boolean dot: new boolean[] { false, true }) {
+                    for (char ch: WriteTimecode.supportedChars()) {
                         port.send(new WriteTimecode(pos, ch, dot));
-                        Thread.sleep(10);
+                        Thread.sleep(50);
                     }
                 }
-                port.send(new WriteTimecode(pos, (byte) 0x0, false));
+                port.send(new WriteTimecode(pos, ' ', false));
             }
 
             for (PanelLED led: PanelLED.values()) {
