@@ -25,6 +25,7 @@ public class SetChannelNumber extends Command {
         if (value.length() <1 || value.length() > 2) {
             throw new RuntimeException("Value must be of length 1 or 2: [" + value + "]");
         }
+        // XXX validate values are acceptable -- Digit, Dash, Space
         this.value = value;
     }
 

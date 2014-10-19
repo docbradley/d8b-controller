@@ -89,9 +89,23 @@ public class MeterLEDHelper {
             return this;
         }
 
+        /**
+         * Set bits below and at newLevel.
+         * DOES NOT clear the bits above newLevel.
+         * @param newLevel
+         */
+        public void fillTo(final MeterLEDNumber newLevel) {
+            for (MeterLEDNumber level: MeterLEDNumber.values()) {
+                if (level.ordinal() <= newLevel.ordinal()) {
+                    set(level);
+                }
+            }
+        }
+
         public boolean check(MeterLEDNumber ledNumber) {
             return bitmask.testBit(ledNumber.ordinal() - MeterLEDNumber.Level1.ordinal());
         }
+
     }
 
 }
