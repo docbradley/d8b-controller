@@ -12,6 +12,7 @@ public class SetGlobalSignalLevelDisplayMode
 implements Command {
 
     public final DeviceType deviceType;
+    public final SignalLevelDisplayMode mode;
 
     private final MCUSysexMessage message;
 
@@ -29,7 +30,9 @@ implements Command {
         } catch (InvalidMidiDataException e) {
             throw new IllegalStateException(e);
         }
+
         this.deviceType = deviceType;
+        this.mode = mode;
     }
 
     @Override

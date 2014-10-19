@@ -32,6 +32,11 @@ implements Command {
         SpreadFromCenter
     }
 
+    public final Channel channel;
+    public final VPotMode mode;
+    public final int value;
+    public final boolean dot;
+
     /**
      * 
      * @param channel
@@ -43,6 +48,11 @@ implements Command {
     public WriteVPot(final Channel channel, final VPotMode mode, final int value, final boolean dot) {
         super((byte) 0x0, (byte) (0x30 | channel.ordinal()),
                 mapCommand(mode, value, dot));
+
+        this.channel = channel;
+        this.mode = mode;
+        this.value = value;
+        this.dot = dot;
     }
 
     private static byte mapCommand(final VPotMode mode, final int value, final boolean dot) {

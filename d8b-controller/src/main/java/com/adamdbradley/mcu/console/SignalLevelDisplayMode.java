@@ -19,6 +19,18 @@ public enum SignalLevelDisplayMode {
     PEAK,
     INDICATOR_AND_PEAK,
     METER_AND_PEAK,
-    INDICATOR_AND_METER_AND_PEAK
+    INDICATOR_AND_METER_AND_PEAK;
+
+    public boolean indicator() {
+        return (ordinal() % 2) == 1;
+    }
+
+    public boolean meter() {
+        return ((ordinal() / 2) % 2) == 1;
+    }
+
+    public boolean peak() {
+        return ((ordinal() / 4) % 2) == 1;
+    }
 
 }

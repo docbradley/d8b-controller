@@ -13,6 +13,8 @@ public class WriteScreen
 implements Command {
 
     public final DeviceType deviceType;
+    public final int row;
+    public final int column;
     public final String string;
 
     private final MCUSysexMessage message;
@@ -26,7 +28,10 @@ implements Command {
         } catch (InvalidMidiDataException e) {
             throw new IllegalStateException(e);
         }
+
         this.deviceType = deviceType;
+        this.row = row;
+        this.column = column;
         this.string = string;
     }
 
@@ -40,6 +45,8 @@ implements Command {
             throw new IllegalStateException(e);
         }
         this.deviceType = deviceType;
+        this.row = row;
+        this.column = column;
         this.string = decode(encodedString);
     }
 

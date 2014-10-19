@@ -116,7 +116,7 @@ public class CommandParser {
             } else if ((controllerNumber & 0xC0) == 0x40) {
                 // Write timecode
                 return new WriteTimecode((byte) (controllerNumber & 0x0F),
-                        (byte) (message.getMessage()[2] & 0x3F), // TODO: Character LUT
+                        WriteScreen.decode((byte) (message.getMessage()[2] & 0x3F)),
                         (message.getMessage()[2] & 0x40) != 0);
             }
 
