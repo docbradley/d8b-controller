@@ -1,0 +1,29 @@
+I apply a fairly conventional Java coding style.  For the most part,
+Eclipse's default formating does the right thing, but keep a few things
+in mind if you wish to make contributions:
+
+- Don't be surprised if I ask for style revisions before accepting a
+  pull request.  Code is documentation that a compiler can read, so I
+  take clarity, consistency, and good design seriously.
+
+- All occurrences of "I" in the comments should be initialed; e.g.,
+  "I (ADB) need to finish designing this".
+
+- Break long lines first on commas (within a parameter list); if none
+  is available, then break on the last period in a full-qualified
+  name or reference chain, then break on binary operators.  For all but
+  the first, the breaking character (the dot or the binary operator)
+  belongs at the front of the indented new line, not the end of the
+  broken line.
+
+- I prefer whitespace at points of top-level grammatic delineation but
+  prefer not to have it everywhere it's permissible.
+  UNACCEPTABLE:       for(i=0;i<1;i++){
+  MINIMUM ACCEPTABLE: for (i=0; i<1; i++) {
+  ACCEPTABLE:         for (i = 0; i < 1; i ++) { [What CHECKSTYLE likes]
+
+- Use four spaces for tabs, not tab characters.  I find it helpful to
+  turn on Eclipse's "show whitespace characters" option.
+
+Have Fun,
+Adam <adam.d.bradley@gmail.com>
