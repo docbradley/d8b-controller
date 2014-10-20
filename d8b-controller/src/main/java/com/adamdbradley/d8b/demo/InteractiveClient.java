@@ -58,8 +58,7 @@ public class InteractiveClient implements Runnable, AutoCloseable {
                             report(signal);
                         }
                     } else {
-                        // TODO: Could use a LinkedBlockingQueue
-                        // so we could block instead of polling?
+                        // Could use LinkedBlockingQueue to block instead of polling
                         try {
                             Thread.sleep(250);
                         } catch (InterruptedException e) {
