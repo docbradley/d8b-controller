@@ -1,22 +1,31 @@
 package com.adamdbradley.mcu.console.protocol.signal;
 
 import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MidiMessage;
 
 import com.adamdbradley.mcu.console.DeviceType;
 import com.adamdbradley.mcu.console.protocol.MCUSysexMessage;
+import com.adamdbradley.mcu.console.protocol.Message;
 import com.adamdbradley.mcu.console.protocol.Signal;
 
-public class WakeUpMessage
+public class ReportAwake
+extends Message
 implements Signal {
 
     public final DeviceType deviceType;
 
-    private MCUSysexMessage message;
+    /**
+     * @param deviceType
+     * @param unique An 11 word opaque identifier for the last time the MCU rebooted.
+     */
+    public ReportAwake(final DeviceType deviceType, final byte[] unique) {
+        super(build(deviceType, unique));
 
-    public WakeUpMessage(final DeviceType deviceType, final byte[] unique) {
+        this.deviceType = deviceType;
+    }
+
+    private static MCUSysexMessage build(final DeviceType deviceType, final byte[] unique) {
         try {
-            this.message = new MCUSysexMessage(deviceType,
+            return new MCUSysexMessage(deviceType,
                     (byte) 0x01,
                     unique[0],
                     unique[1],
@@ -32,12 +41,6 @@ implements Signal {
         } catch (InvalidMidiDataException e) {
             throw new IllegalStateException(e);
         }
-        this.deviceType = deviceType;
-    }
-
-    @Override
-    public MidiMessage getMessage() {
-        return message;
     }
 
     @Override

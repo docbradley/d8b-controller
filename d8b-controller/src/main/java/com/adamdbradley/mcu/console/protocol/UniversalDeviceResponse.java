@@ -1,20 +1,19 @@
 package com.adamdbradley.mcu.console.protocol;
 
 import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MidiMessage;
 import javax.sound.midi.SysexMessage;
 
-/**
- * 
- */
 public class UniversalDeviceResponse
+extends Message
 implements Signal {
-
-    private final MidiMessage message;
 
     public UniversalDeviceResponse(final byte[] deviceId, final byte[] version)
             throws InvalidMidiDataException {
-        final byte[] message = new byte[] {
+        super(build(deviceId, version));
+    }
+
+    private static SysexMessage build(final byte[] deviceId, final byte[] version) {
+        final byte[] payload = new byte[] {
                 (byte) 0xF0,
                 0x7E,
                 0x00,
@@ -33,18 +32,11 @@ implements Signal {
                 version[3],
                 (byte) 0xF7
         };
-        this.message = new SysexMessage(message, message.length);
-    }
-
-    @Override
-    public MidiMessage getMessage() {
-        return message;
-    }
-
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName() + ":"
-                + MCUSysexMessage.toString(message);
+        try {
+            return new SysexMessage(payload, payload.length);
+        } catch (InvalidMidiDataException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
 }

@@ -2,10 +2,10 @@ package com.adamdbradley.mcu.console.protocol.signal;
 
 import com.adamdbradley.mcu.console.Channel;
 import com.adamdbradley.mcu.console.ChannelButton;
-import com.adamdbradley.mcu.console.protocol.NoteOnMessageBase;
+import com.adamdbradley.mcu.console.protocol.NoteOnConsoleMessage;
 
 public class ChannelButtonMessage
-extends NoteOnMessageBase {
+extends NoteOnConsoleMessage {
 
     public final Channel channel;
     public final ChannelButton channelButton;
@@ -19,7 +19,6 @@ extends NoteOnMessageBase {
         this.channelButton = channelButton;
     }
 
-    // XXX: pull up to common superclass
     static byte encode(final Channel channel, final ChannelButton button) {
         switch (button) {
         case REC:

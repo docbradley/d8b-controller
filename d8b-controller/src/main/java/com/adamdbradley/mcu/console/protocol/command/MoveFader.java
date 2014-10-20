@@ -2,13 +2,13 @@ package com.adamdbradley.mcu.console.protocol.command;
 
 import com.adamdbradley.mcu.console.Fader;
 import com.adamdbradley.mcu.console.protocol.Command;
-import com.adamdbradley.mcu.console.protocol.PitchBendMessageBase;
+import com.adamdbradley.mcu.console.protocol.PitchBendConsoleMessage;
 
 /**
  * Range 0 - 1023
  */
 public class MoveFader
-extends PitchBendMessageBase
+extends PitchBendConsoleMessage
 implements Command {
 
     public final Fader fader;

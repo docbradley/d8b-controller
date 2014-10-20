@@ -1,24 +1,22 @@
 package com.adamdbradley.mcu.console.protocol;
 
 import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MidiMessage;
 
 public class ChannelControlChangeConsoleMessage
-implements Message {
-
-    private final ChannelControlChangeMidiMessage message;
+extends Message {
 
     public ChannelControlChangeConsoleMessage(final byte channel, final byte controllerNumber, final byte value) {
+        super(build(channel, controllerNumber, value));
+    }
+
+    private static final ChannelControlChangeMidiMessage build(final byte channel,
+            final byte controllerNumber,
+            final byte value) {
         try {
-            message = new ChannelControlChangeMidiMessage(channel, controllerNumber, value);
+            return new ChannelControlChangeMidiMessage(channel, controllerNumber, value);
         } catch (InvalidMidiDataException e) {
             throw new IllegalStateException(e);
         }
-    }
-
-    @Override
-    public MidiMessage getMessage() {
-        return message;
     }
 
     @Override

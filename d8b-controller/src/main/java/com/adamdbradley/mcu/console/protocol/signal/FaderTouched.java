@@ -1,11 +1,11 @@
 package com.adamdbradley.mcu.console.protocol.signal;
 
 import com.adamdbradley.mcu.console.Fader;
-import com.adamdbradley.mcu.console.protocol.NoteOnMessageBase;
+import com.adamdbradley.mcu.console.protocol.NoteOnConsoleMessage;
 import com.adamdbradley.mcu.console.protocol.Signal;
 
 public class FaderTouched
-extends NoteOnMessageBase
+extends NoteOnConsoleMessage
 implements Signal {
 
     public FaderTouched(Fader fader) {

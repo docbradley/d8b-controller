@@ -100,8 +100,11 @@ public class SignalParser {
             case 0x17:
                 // VPot moved
                 return new ChannelVPotMoved(
-                        Channel.values()[message.getMessage()[1] - 0x10],
-                        message.getMessage()[2]);
+                        Channel.values()[message.getMessage()[1] & 0x0F],
+                        ((message.getMessage()[2] & 0x40) == 0)
+                            ? message.getMessage()[2]
+                            : -(message.getMessage()[2] & 0x0F)
+                        );
             case 0x3C:
                 if ((message.getMessage()[2] & 0x40) != 0) {
                     return new JogLeft();
@@ -148,7 +151,7 @@ public class SignalParser {
                         return null;
                     case 0x01:
                         // Wake-up message
-                        return new WakeUpMessage(device, Arrays.copyOfRange(payload, 6, 17));
+                        return new ReportAwake(device, Arrays.copyOfRange(payload, 6, 17));
                     case 0x08:
                         // Reboot1 -- Command, not signal
                     case 0x09:

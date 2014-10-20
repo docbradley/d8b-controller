@@ -1,33 +1,30 @@
 package com.adamdbradley.mcu.console.protocol.command;
 
+import java.util.Set;
+
 import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MidiMessage;
 
 import com.adamdbradley.mcu.console.DeviceType;
 import com.adamdbradley.mcu.console.protocol.Command;
 import com.adamdbradley.mcu.console.protocol.MCUSysexMessage;
+import com.adamdbradley.mcu.console.protocol.Message;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 
 public class WriteScreen
+extends Message
 implements Command {
 
     public final DeviceType deviceType;
+
     public final int row;
     public final int column;
     public final String string;
 
-    private final MCUSysexMessage message;
-
     public WriteScreen(final DeviceType deviceType,
             final int row, final int column,
             final String string) {
-        try {
-            message = new MCUSysexMessage(deviceType,
-                    build(row, column, string));
-        } catch (InvalidMidiDataException e) {
-            throw new IllegalStateException(e);
-        }
+        super(build(deviceType, row, column, string));
 
         this.deviceType = deviceType;
         this.row = row;
@@ -38,12 +35,8 @@ implements Command {
     public WriteScreen(final DeviceType deviceType,
             final int row, final int column,
             final byte[] encodedString) {
-        try {
-            message = new MCUSysexMessage(deviceType,
-                    build(row, column, encodedString));
-        } catch (InvalidMidiDataException e) {
-            throw new IllegalStateException(e);
-        }
+        super(build(deviceType, row, column, encodedString));
+
         this.deviceType = deviceType;
         this.row = row;
         this.column = column;
@@ -51,9 +44,26 @@ implements Command {
     }
 
 
-    @Override
-    public MidiMessage getMessage() {
-        return message;
+    private static MCUSysexMessage build(final DeviceType deviceType,
+            final int row, final int column,
+            final String string) {
+        try {
+            return new MCUSysexMessage(deviceType,
+                    build(row, column, string));
+        } catch (InvalidMidiDataException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    private static MCUSysexMessage build(final DeviceType deviceType,
+            final int row, final int column,
+            final byte[] encodedString) {
+        try {
+            return new MCUSysexMessage(deviceType,
+                    build(row, column, encodedString));
+        } catch (InvalidMidiDataException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     private static byte[] build(final int row, final int column, final String string) {
@@ -240,4 +250,7 @@ implements Command {
             .put('\u2591', (byte) 0x7F) // light block
             .build();
 
+    public static Set<Character> encodableCharacters() {
+        return charEncoding.keySet();
+    }
 }

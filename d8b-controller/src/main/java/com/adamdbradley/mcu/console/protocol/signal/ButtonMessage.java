@@ -3,13 +3,13 @@ package com.adamdbradley.mcu.console.protocol.signal;
 import java.util.Map;
 
 import com.adamdbradley.mcu.console.PanelButton;
-import com.adamdbradley.mcu.console.protocol.NoteOnMessageBase;
+import com.adamdbradley.mcu.console.protocol.NoteOnConsoleMessage;
 import com.adamdbradley.mcu.console.protocol.Signal;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 
 public abstract class ButtonMessage
-extends NoteOnMessageBase
+extends NoteOnConsoleMessage
 implements Signal {
 
     public final PanelButton button;

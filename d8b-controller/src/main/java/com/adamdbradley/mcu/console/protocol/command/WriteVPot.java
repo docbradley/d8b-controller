@@ -12,24 +12,40 @@ implements Command {
 
     public enum VPotMode {
         /**
-         * Value must be 1 (left) throught 6 (center) through 11 (right).
+         * Value must be -5 (left) through 0 (center) through 5 (right).
+         * Wire value is 1 (left) through 6 (center) through 11 (right).
          */
-        SinglePosition,
+        SinglePosition(-5, 5),
 
         /**
-         * Value must be 1 (left) throught 6 (center) through 11 (right).
+         * Value must be -5 (left) through 0 (center) through 5 (right).
+         * Wire value is 1 (left) throught 6 (center) through 11 (right).
          */
-        DirectionFanFromCenter,
+        DirectionFanFromCenter (-5, 5),
 
         /**
          * Value must be 1 (left) through 11 (full).
+         * Wire value is the same.
          */
-        FanFromLeft,
+        FanFromLeft(1, 11),
 
         /**
          * Value must be 1 (center only) through 6 (full).
+         * Wire value is the same.
          */
-        SpreadFromCenter
+        SpreadFromCenter(1, 6);
+
+        private final int min;
+        private final int max;
+
+        VPotMode(final int min, final int max) {
+            this.min = min;
+            this.max = max;
+        }
+
+        public int min() { return min; }
+        public int max() { return max; }
+
     }
 
     public final Channel channel;

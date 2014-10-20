@@ -3,10 +3,10 @@ package com.adamdbradley.mcu.console.protocol.command;
 import com.adamdbradley.mcu.console.Channel;
 import com.adamdbradley.mcu.console.ChannelLED;
 import com.adamdbradley.mcu.console.protocol.Command;
-import com.adamdbradley.mcu.console.protocol.NoteOnMessageBase;
+import com.adamdbradley.mcu.console.protocol.NoteOnConsoleMessage;
 
 abstract class ChannelLEDCommandBase
-extends NoteOnMessageBase
+extends NoteOnConsoleMessage
 implements Command {
 
     public final Channel channel;

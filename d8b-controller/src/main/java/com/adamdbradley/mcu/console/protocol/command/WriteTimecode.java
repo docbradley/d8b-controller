@@ -47,7 +47,7 @@ implements Command {
         }
     }
 
-    public static char decide(final byte encodedCharacter) {
+    public static char decode(final byte encodedCharacter) {
         if (encode.inverse().containsKey(encodedCharacter)) {
             return encode.inverse().get(encodedCharacter);
         } else {

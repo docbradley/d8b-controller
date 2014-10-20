@@ -91,7 +91,7 @@ public class CommandParser {
             // VPot
             // Controller 0x30 + ch,  0xN? - mode, 0x?N - value (0 = off, 0x01 - 0x0B == position)
             final byte controllerNumber = message.getMessage()[1];
-            if ((controllerNumber & 0xC0) == 0x30) {
+            if ((controllerNumber & 0xF0) == 0x30) {
                 final Channel vpotChannel = Channel.values()[controllerNumber & 0x07];
                 final byte position = message.getMessage()[2];
                 final VPotMode mode = VPotMode.values()[(position & 0x30) >> 4];
@@ -116,7 +116,7 @@ public class CommandParser {
             } else if ((controllerNumber & 0xC0) == 0x40) {
                 // Write timecode
                 return new WriteTimecode((byte) (controllerNumber & 0x0F),
-                        WriteScreen.decode((byte) (message.getMessage()[2] & 0x3F)),
+                        WriteTimecode.decode((byte) (message.getMessage()[2] & 0x3F)),
                         (message.getMessage()[2] & 0x40) != 0);
             }
 
@@ -129,8 +129,8 @@ public class CommandParser {
             if (messageChannel != 0) {
                 return null;
             }
-            final Channel signalChannel = Channel.values()[message.getMessage()[2] >> 4];
-            return new SetSignalLevel(signalChannel, message.getMessage()[2] & 0x0F);
+            final Channel signalChannel = Channel.values()[message.getMessage()[1] >> 4];
+            return new SetSignalLevel(signalChannel, message.getMessage()[1] & 0x0F);
 
         case 0xE0:
             // Pitch Bend: FADER
@@ -141,7 +141,7 @@ public class CommandParser {
 
         case 0xF0:
             // SysEx
-            if (message.getLength() > 7) {
+            if (message.getLength() >= 7) {
                 final byte[] payload = message.getMessage();
                 if (payload[0] == (byte) 0xF0
                         && payload[1] == (byte) 0x00

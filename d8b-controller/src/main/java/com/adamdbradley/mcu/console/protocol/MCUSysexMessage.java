@@ -7,7 +7,8 @@ import javax.sound.midi.SysexMessage;
 
 import com.adamdbradley.mcu.console.DeviceType;
 
-public class MCUSysexMessage extends SysexMessage {
+public class MCUSysexMessage
+extends SysexMessage {
 
     public static final byte[] PREFIX = new byte[] { (byte) 0xf0, 0x00, 0x00, 0x66, 
         0x00 // Replace with deviceType encoding
@@ -48,4 +49,21 @@ public class MCUSysexMessage extends SysexMessage {
         }
         return sb.toString();
     }
+
+    @Override
+    public int hashCode() {
+        return getMessage().hashCode();
+    }
+
+    @Override
+    public boolean equals(final Object that) {
+        if (that == null) {
+            return false;
+        }
+        if (!(that instanceof SysexMessage)) {
+            return false;
+        }
+        return getMessage().equals(((SysexMessage) that).getMessage());
+    }
+
 }

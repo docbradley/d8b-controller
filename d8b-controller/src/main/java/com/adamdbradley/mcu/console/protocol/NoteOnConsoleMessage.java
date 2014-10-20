@@ -2,16 +2,18 @@ package com.adamdbradley.mcu.console.protocol;
 
 import javax.sound.midi.InvalidMidiDataException;
 
-public class ChannelPressureConsoleMessage
+public class NoteOnConsoleMessage
 extends Message {
 
-    public ChannelPressureConsoleMessage(final byte channel, final byte value) {
-        super(build(channel, value));
+    public NoteOnConsoleMessage(final byte channel, final byte note, final byte velocity) {
+        super(build(channel, note, velocity));
     }
 
-    private static ChannelPressureMidiMessage build(final byte channel, final byte value) {
+    private static NoteOnMidiMessage build(final byte channel,
+            final byte note,
+            final byte velocity) {
         try {
-            return new ChannelPressureMidiMessage(channel, value);
+            return new NoteOnMidiMessage(channel, note, velocity);
         } catch (InvalidMidiDataException e) {
             throw new IllegalStateException(e);
         }

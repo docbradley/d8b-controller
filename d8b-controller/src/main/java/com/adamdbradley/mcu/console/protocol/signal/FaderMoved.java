@@ -3,11 +3,11 @@ package com.adamdbradley.mcu.console.protocol.signal;
 import javax.sound.midi.InvalidMidiDataException;
 
 import com.adamdbradley.mcu.console.Fader;
-import com.adamdbradley.mcu.console.protocol.PitchBendMessageBase;
+import com.adamdbradley.mcu.console.protocol.PitchBendConsoleMessage;
 import com.adamdbradley.mcu.console.protocol.Signal;
 
 public class FaderMoved
-extends PitchBendMessageBase
+extends PitchBendConsoleMessage
 implements Signal {
 
     public final Fader fader;
