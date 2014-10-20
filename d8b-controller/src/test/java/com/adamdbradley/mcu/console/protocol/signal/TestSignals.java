@@ -46,7 +46,10 @@ public class TestSignals {
     @Test
     public void channelVPotMoved() throws Exception {
         for (final Channel channel: Channel.values()) {
-            for (int velocity=-63; velocity<64; velocity++) {
+            for (int velocity=-15; velocity<=15; velocity++) {
+                if (velocity == 0) {
+                    continue;
+                }
                 assertEquals(new ChannelVPotMoved(channel, velocity),
                         parser.parse(new ChannelVPotMoved(channel, velocity).getMessage()));
             }
