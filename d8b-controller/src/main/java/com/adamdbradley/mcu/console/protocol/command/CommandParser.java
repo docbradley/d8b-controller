@@ -73,6 +73,24 @@ public class CommandParser {
                 } else {
                     return new ShutPanelLED(led);
                 }
+            case 0x70:
+                final PanelLED timecodeLED;
+                switch (message.getMessage()[1]) {
+                case 0x71:
+                    timecodeLED = PanelLED.Timecode_SMPTE;
+                    break;
+                case 0x72:
+                    timecodeLED = PanelLED.Timecode_BEATS;
+                    break;
+                default:
+                    // TODO: I've seen 0x73 but have no idea what it does?
+                    return null;
+                }
+                if (message.getMessage()[2] != 0x00) {
+                    return new LightPanelLED(timecodeLED);
+                } else {
+                    return new ShutPanelLED(timecodeLED);
+                }
             default:
                 return null;
             }
@@ -166,6 +184,10 @@ public class CommandParser {
                         return new Reboot1(deviceType);
                     case 0x09:
                         return new Reboot2(deviceType);
+                    case 0x0A:
+                        // TODO: "Set Relay Click" -- what does it do?
+                        // 01 = on, 00 = off
+                        return null;
                     case 0x12:
                         // Screen write
                         int position = payload[6];

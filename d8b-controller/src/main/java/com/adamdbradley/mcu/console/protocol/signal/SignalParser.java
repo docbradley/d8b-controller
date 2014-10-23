@@ -22,6 +22,7 @@ public class SignalParser {
     // SELECT:     Note On        ch0 0x18-0x1F 0x00/0x7F
     // Buttons:    Note On        ch0 0x28-0x65 0x00/0x7F
     // F TOUCH:    Note On        ch0 0x68-0x6F 0x00/0x7F
+    // ???         Control Change ch0 0x2E      0x01-0x7F (TODO: Footswitch maybe?)
     // JOG:        Control Change ch0 0x3C      0x01/0x41 (0x01 = right, 0x41 = left)
     // VPot left:  Control change ch0 0x10-0x17 0x00-0x7F (0x00-3F=right, 0x40-0x4F=left)
     // F MOVE:     Pitch Bend     chN LSB(3msb) MSB(full) // = 10 bits of functional resolution
