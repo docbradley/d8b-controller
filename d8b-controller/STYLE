@@ -25,5 +25,12 @@ in mind if you wish to make contributions:
 - Use four spaces for tabs, not tab characters.  I find it helpful to
   turn on Eclipse's "show whitespace characters" option.
 
+- I like encapsulation.  Make things as close to private as is
+  reasonable.  If it's not immediately obvious why something (class,
+  property, method) should be public, include a comment as to why.
+
+- I like immutability patterns.  Whenever possible, make properties
+  and variables final.  Final method parameters strongly preferred.
+
 Have Fun,
 Adam <adam.d.bradley@gmail.com>
