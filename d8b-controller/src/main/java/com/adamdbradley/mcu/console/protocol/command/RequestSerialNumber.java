@@ -21,7 +21,7 @@ implements Command {
 
     private static MCUSysexMessage build(final DeviceType deviceType) {
         try {
-            return new MCUSysexMessage(deviceType, (byte) 0x1A);
+            return new MCUSysexMessage(deviceType, (byte) 0x1A, (byte) 0x00);
         } catch (InvalidMidiDataException e) {
             throw new IllegalStateException(e);
         }
