@@ -76,9 +76,10 @@ implements Runnable {
             parameterTypes[i] = parameters[i].getClass();
         }
         try {
-            final Method method = this.getClass().getMethod(methodName, parameterTypes);
-            return (T) method.invoke(this, parameters);
+            final Method method = object.getClass().getMethod(methodName, parameterTypes);
+            return (T) method.invoke(object, parameters);
         } catch (NoSuchMethodException e) {
+            System.err.println("Available: " + Arrays.asList(object.getClass().getMethods()));
             throw new RuntimeException("No method found for "
                     + methodName + " " + Arrays.asList(parameterTypes)
                     + "; consider creating a least-common-type catch-all?", e);
