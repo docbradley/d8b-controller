@@ -15,7 +15,8 @@ public class WriteScreenCharacter extends Command {
     protected WriteScreenCharacter(final byte character) {
         super(CommandType.WriteScreenCharacter);
         if (character > 127 || character < 20) {
-            throw new IllegalArgumentException("Can't represent as ASCII: " + character);
+            throw new IllegalArgumentException("Can't represent as ASCII: "
+                    + Integer.toHexString(character));
         }
         this.character = character;
     }
