@@ -17,20 +17,23 @@ implements Signal {
 
     /**
      * @param deviceType
-     * @param serialNumber (6 words)
+     * @param serialNumber (7 words)
      */
     public ReportSerialNumber(final DeviceType deviceType,
             final byte[] serialNumber) {
         super(build(deviceType, serialNumber));
 
+        if (serialNumber.length != 7) {
+            throw new IllegalArgumentException("SerialNumber should be 7 long, is " + serialNumber.length);
+        }
         this.serialNumber = new BigInteger(serialNumber);
     }
 
     private static MCUSysexMessage build(final DeviceType deviceType,
             final byte[] serialNumber) {
-        final byte[] payload = new byte[7];
+        final byte[] payload = new byte[serialNumber.length + 1];
         payload[0] = 0x1B;
-        System.arraycopy(serialNumber, 0, payload, 1, 6);
+        System.arraycopy(serialNumber, 0, payload, 1, serialNumber.length);
 
         try {
             return new MCUSysexMessage(deviceType, payload);
