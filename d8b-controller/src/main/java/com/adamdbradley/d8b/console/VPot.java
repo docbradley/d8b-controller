@@ -37,6 +37,17 @@ public enum VPot {
     SoloStudioLevel,
     PhonesCueMix1Level,
     PhonesCueMix2Level,
-    SpeakerLevel
+    SpeakerLevel;
+
+    public boolean hasFader() {
+        return name().matches("^Ch[0-9]+");
+    }
+    public Fader getFader() {
+        if (hasFader()) {
+            return Fader.values()[ordinal()];
+        } else {
+            throw new IllegalStateException("VPot " + name() + " doesn't have a Fader");
+        }
+    }
 
 }

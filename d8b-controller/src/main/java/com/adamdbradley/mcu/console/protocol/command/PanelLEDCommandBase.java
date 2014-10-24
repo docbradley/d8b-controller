@@ -20,8 +20,10 @@ implements Command {
     }
 
     static byte encode(final PanelLED led) {
-        if (led == PanelLED.Timecode_SMPTE || led == PanelLED.Timecode_BEATS) {
-            throw new IllegalArgumentException();
+        if (led == PanelLED.Timecode_SMPTE) {
+            return (byte) 0x71;
+        } else if (led == PanelLED.Timecode_BEATS) {
+            return (byte) 0x72;
         } else {
             // When they coincide, LEDs and buttons have the same encodings.
             // Since PanelButtons are a superset of PanelLEDs, put the mapping there.
