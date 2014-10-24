@@ -170,7 +170,7 @@ public class SignalParser {
                         return null;
                     case 0x1B:
                         // Serial number report: 6 bytes
-                        return new ReportSerialNumber(device, Arrays.copyOfRange(payload, 6, 12));
+                        return new ReportSerialNumber(device, Arrays.copyOfRange(payload, 6, 13));
                     default:
                         // Unknown message type
                         return null;

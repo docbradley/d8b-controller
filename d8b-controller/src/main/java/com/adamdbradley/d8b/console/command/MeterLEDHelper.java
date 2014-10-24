@@ -95,7 +95,9 @@ public class MeterLEDHelper {
          * @param newLevel
          */
         public void fillTo(final MeterLEDNumber newLevel) {
-            for (MeterLEDNumber level: MeterLEDNumber.values()) {
+            if (newLevel == null) {
+                return;
+            } else for (MeterLEDNumber level: MeterLEDNumber.values()) {
                 if (level.ordinal() <= newLevel.ordinal()) {
                     set(level);
                 }

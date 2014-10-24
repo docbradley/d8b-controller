@@ -98,6 +98,7 @@ public class TestSignals {
                         (byte) rng.nextInt(128),
                         (byte) rng.nextInt(128),
                         (byte) rng.nextInt(128),
+                        (byte) rng.nextInt(128),
                         (byte) rng.nextInt(128)
                 };
                 assertEquals(new ReportSerialNumber(deviceType, serialNumber),
