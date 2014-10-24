@@ -1,5 +1,7 @@
 package com.adamdbradley.d8b.console;
 
+import java.util.regex.Pattern;
+
 /**
  * Names are a recognizable distortion of their format in
  * the "switch.txt" file, which must be in the "/firmware/"
@@ -280,8 +282,22 @@ public enum PanelButton implements ConsoleIdMaps.Aliased {
     ch96_ch_Select,
     ch96_ch_Write;
 
+    private static Pattern nameParser = Pattern.compile("ch([0-9]+)_.+$");
     public String[] aliases() {
         return new String[] { name() };
+    }
+
+    public boolean isChannelButton() {
+        return name().matches("^ch[0-9]+_.+$")
+                && this != ch96_ch_Select
+                && this != ch96_ch_Write;
+    }
+
+    public Fader getChannel() {
+        if (!isChannelButton()) {
+            throw new IllegalStateException(name() + " doesn't have a Channel");
+        }
+        return Fader.values()[Integer.parseInt(nameParser.matcher(name()).group(1))];
     }
 
 }
