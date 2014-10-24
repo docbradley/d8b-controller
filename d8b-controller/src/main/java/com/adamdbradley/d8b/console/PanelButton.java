@@ -1,5 +1,6 @@
 package com.adamdbradley.d8b.console;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -282,13 +283,14 @@ public enum PanelButton implements ConsoleIdMaps.Aliased {
     ch96_ch_Select,
     ch96_ch_Write;
 
-    private static Pattern nameParser = Pattern.compile("ch([0-9]+)_.+$");
+    private static Pattern nameParser = Pattern.compile("^ch([0-9]+)_.+$");
+
     public String[] aliases() {
         return new String[] { name() };
     }
 
     public boolean isChannelButton() {
-        return name().matches("^ch[0-9]+_.+$")
+        return nameParser.matcher(name()).matches()
                 && this != ch96_ch_Select
                 && this != ch96_ch_Write;
     }
@@ -297,7 +299,11 @@ public enum PanelButton implements ConsoleIdMaps.Aliased {
         if (!isChannelButton()) {
             throw new IllegalStateException(name() + " doesn't have a Channel");
         }
-        return Fader.values()[Integer.parseInt(nameParser.matcher(name()).group(1))];
+        final Matcher matcher = nameParser.matcher(name());
+        if (!matcher.matches()) {
+            throw new IllegalStateException(name() + " not a Channel button");
+        }
+        return Fader.values()[Integer.parseInt(matcher.group(1))];
     }
 
 }
