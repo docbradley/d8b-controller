@@ -94,10 +94,12 @@ implements AutoCloseable {
      * @param commands
      */
     public void writeBytes(byte[] bytes) {
-        try {
-            port.writeBytes(bytes);
-        } catch (SerialPortException e) {
-            throw new RuntimeException(e);
+        synchronized(port) {
+            try {
+                port.writeBytes(bytes);
+            } catch (SerialPortException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
