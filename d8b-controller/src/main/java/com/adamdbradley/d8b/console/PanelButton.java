@@ -290,15 +290,21 @@ public enum PanelButton implements ConsoleIdMaps.Aliased {
     }
 
     public boolean isChannelButton() {
-        return nameParser.matcher(name()).matches()
-                && this != ch96_ch_Select
-                && this != ch96_ch_Write;
+        return this == nbch_RecReadyProxy
+                || (nameParser.matcher(name()).matches()
+                        && this != ch96_ch_Select
+                        && this != ch96_ch_Write);
     }
 
     public Fader getChannel() {
         if (!isChannelButton()) {
             throw new IllegalStateException(name() + " doesn't have a Channel");
         }
+
+        if (this == nbch_RecReadyProxy) {
+            return Fader.Ch1;
+        }
+
         final Matcher matcher = nameParser.matcher(name());
         if (!matcher.matches()) {
             throw new IllegalStateException(name() + " not a Channel button");
